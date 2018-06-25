@@ -1,4 +1,4 @@
-#パターン認識について
+# パターン認識について
 ## Opencvの使い方等
 ### opencv_webcam.py
 opencvにてWEBカメラの画像を取得する  
