@@ -1,4 +1,4 @@
-#Opencvの使い方についてをまとめる
+# Opencvの使い方についてをまとめる
 ## opencv_webcam.py
 opencvにてWEBカメラの画像を取得する  
 VideoCaptureの引数によってカメラデバイスを選択できる(ex: 0なら内蔵のカメラ)  
