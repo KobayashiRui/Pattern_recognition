@@ -8,10 +8,10 @@ def Print_webcam_setting(web_cam):
 
 def Set_webcam_setting(web_cam):
     web_cam.set(cv2.CAP_PROP_FPS, 30) #FPSの設定
-    web_cam.set(cv2.CAP_PROP_FRAME_WIDTH, 640) #幅の設定
-    web_cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 480) #高さの設定
+    web_cam.set(cv2.CAP_PROP_FRAME_WIDTH, 320) #幅の設定
+    web_cam.set(cv2.CAP_PROP_FRAME_HEIGHT, 240) #高さの設定
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 
 Print_webcam_setting(cap)
 Set_webcam_setting(cap)
