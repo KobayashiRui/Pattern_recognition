@@ -16,6 +16,12 @@ print("{}:: {}".format(hight/2,width/2))
 img_gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
 img_gray = img_gray[200:260,0:640]
 
+cv2.imshow("gray_image",img_gray)
+
+cv2.waitKey(0)
+
+cv2.destroyAllWindows()
+
 histr = cv2.calcHist([img_gray],[0],None,[256],[0,256])
 plt.plot(histr,color = 'b')
 plt.show()
