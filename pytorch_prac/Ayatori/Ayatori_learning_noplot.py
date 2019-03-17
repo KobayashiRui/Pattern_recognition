@@ -7,7 +7,9 @@ from torch.autograd import Variable
 import torchvision
 from torchvision import transforms, datasets, models
 
+import matplotlib.use('Agg')
 import matplotlib.pyplot as plt
+
 import numpy as np
 
 def imshow(images, title=None):
@@ -19,7 +21,8 @@ def imshow(images, title=None):
     plt.imshow(images)
     if title is not None:
         plt.title(title)
-    plt.show()
+    #plt.show()
+    plt.savefig("image_learning_test.png")
 
 #訓練データの学習
 def train(train_loader):
@@ -109,7 +112,7 @@ dataset_loader = torch.utils.data.DataLoader(hymenoptera_dataset,
 #                                         shuffle=False, num_workers=4)
 
 #todo フォルダ名からリスト化してソートする
-classes = ('other','rori')
+classes = ('hasi','hisi','hune','kaeru','kawa','tanbo','tudumi')
 
 images, classes_nam = next(iter(dataset_loader))
 print(images.size(), classes_nam.size())  # torch.Size([4, 3, 224, 224]) torch.Size([4])
@@ -122,7 +125,7 @@ num_features = model_ft.fc.in_features
 model_ft.fc = nn.Linear(num_features,7) #これにより512->7の層に変わった
 ##############################
 
-model_ft = models.resnet18(pretrained=True) #このままだと1000クラス分類なので512->1000
+#model_ft = models.resnet18(pretrained=True) #このままだと1000クラス分類なので512->1000
 use_gpu = torch.cuda.is_available()
 num_epochs = 25
 criterion = nn.CrossEntropyLoss()
@@ -133,6 +136,7 @@ if use_gpu:
     model_ft.cuda()
 
 
+#学習開始
 loss_list = []
 val_loss_list = []
 val_acc_list =[]
@@ -153,4 +157,5 @@ torch.save(model_ft.state_dict(),'weight.pth')
 
 plt.plot(range(num_epochs),loss_list)
 #plt.plot(range(num_epochs),val_loss_list)
-plt.show()
+#plt.show()
+plt.savefig("loss_list.png")
