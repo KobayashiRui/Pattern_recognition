@@ -7,7 +7,8 @@ from torch.autograd import Variable
 import torchvision
 from torchvision import transforms, datasets, models
 
-import matplotlib.use('Agg')
+import matplotlib
+matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 
 import numpy as np
@@ -83,23 +84,24 @@ def valid(test_loader):
     
 data_transform = {
     'train': transforms.Compose([
-    #transforms.RandomResizedCrop(224),
+    transforms.RandomResizedCrop(224),
     transforms.RandomHorizontalFlip(),
     transforms.RandomVerticalFlip(),
     transforms.RandomRotation((-180,180)),
-    transforms.RandomGrayscale(),
+    #transforms.RandomGrayscale(),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485,0.456,0.406],std=[0.229,0.224,0.225]),
     ]),
     'val': transforms.Compose([
-    #transforms.RandomResizedCrop(224),
+    transforms.RandomResizedCrop(224),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485,0.456,0.406],std=[0.229,0.224,0.225]),
     ])
 }
 
 # train data読み込み
-hymenoptera_dataset = datasets.ImageFolder(root='Ayatori_dataset/train',
+#ここでバッチサイズやイテレーション数などを設定する
+hymenoptera_dataset = datasets.ImageFolder(root='waza_dataset/train',
                                            transform=data_transform['train'])
 dataset_loader = torch.utils.data.DataLoader(hymenoptera_dataset,
                                              batch_size=4, shuffle=True,

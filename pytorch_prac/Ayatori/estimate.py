@@ -24,7 +24,7 @@ def detect(filename):
         #cv2.waitKey(0)
 
 
-def estimate(image_data):
+def estimate(image_data,model_ft,use_gpu,classes):
     model_ft.eval()
     if use_gpu:
         images = Variable(image_data.cuda(), volatile=True)
@@ -33,10 +33,11 @@ def estimate(image_data):
 
     #推論
     outputs = model_ft(images)
-    print(outputs.data)
-    total_data = sum(outputs.data[0])
-
-    print("hasi : {}% , hisi : {}% , hune : {}% , kaeru : {}% , kawa : {}% , tanbo : {}% , tudumi : {}%".format(outputs.data[0][0]*100.0/total_data, outputs.data[0][1]*100.0/total_data,outputs.data[0][2]*100.0/total_data,outputs.data[0][3]*100.0/total_data,outputs.data[0][4]*100.0/total_data),outputs.data[0][5]*100.0/total_data,outputs.data[0][6]*100.0/total_data))
+    #parsent = F.softmax(outputs,dim=1)[0].detach().cpu().numpy()
+    parsent = F.softmax(outputs,dim=1)[0]
+    print(parsent)
+    #print("hasi : {}% , hisi : {}% , hune : {}% , kaeru : {}% , kawa : {}% , tanbo : {}% , tudumi : {}%".format(outputs.data[0][0]*100.0/total_data, outputs.data[0][1]*100.0/total_data,outputs.data[0][2]*100.0/total_data,outputs.data[0][3]*100.0/total_data,outputs.data[0][4]*100.0/total_data,outputs.data[0][5]*100.0/total_data,outputs.data[0][6]*100.0/total_data))
+    print("hasi : {:.2f}% , hisi : {:.2f}% , hune : {:.2f}% , kaeru : {:.2f}% , kawa : {:.2f}% , tanbo : {:.2f}% , tudumi : {:.2f}%".format(parsent[0]*100.0, parsent[1]*100.0,parsent[2]*100.0,parsent[3]*100.0,parsent[4]*100.0,parsent[5]*100.0,parsent[6]*100.0))
 
     _, predicted = torch.max(outputs.data,1)
     print(classes[predicted.item()])
@@ -87,22 +88,24 @@ def main():
     x_image = x_image.unsqueeze(0)
     
     #モデルの作成&重みの読み込み------------
-    model_ft = models.resnet152(pretrained=True) #このままだと1000クラス分類なので512->1000
+    #model_ft = models.resnet152(pretrained=True) #このままだと1000クラス分類なので512->1000
+    model_ft = models.resnet18(pretrained=True) #このままだと1000クラス分類なので512->1000
     #for param in model_ft.parameters():
     #    param.requires_grad = False
     num_features = model_ft.fc.in_features
     model_ft.fc = nn.Linear(num_features,7) #これにより512->7の層に変わった
     
     #重みの読み込み
-    param = torch.load('weight2.pth')
+    param = torch.load('weight_1.pth')
     model_ft.load_state_dict(param)
     
     use_gpu = torch.cuda.is_available()
+    print(use_gpu)
     
     if use_gpu:
         model_ft.cuda()
     #---------------------------------------
-    estimate(x_image)
+    estimate(x_image,model_ft,use_gpu,classes)
 
 if __name__ == "__main__":
     main()

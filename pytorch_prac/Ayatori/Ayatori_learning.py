@@ -80,16 +80,16 @@ def valid(test_loader):
     
 data_transform = {
     'train': transforms.Compose([
-    #transforms.RandomResizedCrop(224),
+    transforms.RandomResizedCrop(224),
     transforms.RandomHorizontalFlip(),
     transforms.RandomVerticalFlip(),
     transforms.RandomRotation((-180,180)),
-    transforms.RandomGrayscale(),
+    #transforms.RandomGrayscale(),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485,0.456,0.406],std=[0.229,0.224,0.225]),
     ]),
     'val': transforms.Compose([
-    #transforms.RandomResizedCrop(224),
+    transforms.RandomResizedCrop(224),
     transforms.ToTensor(),
     transforms.Normalize(mean=[0.485,0.456,0.406],std=[0.229,0.224,0.225]),
     ])
